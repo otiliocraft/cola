@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Glamour Beauty - Maquillaje Profesional</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <div class="logo">Glamour Beauty</div>
+    <ul>
+      <li><a href="#" data-section="inicio" class="nav-link">Inicio</a></li>
+      <li><a href="#" data-section="productos" class="nav-link">Productos</a></li>
+      <li><a href="#" data-section="tips" class="nav-link">Tips</a></li>
+      <li><a href="#" data-section="comentarios" class="nav-link">Comentarios</a></li>
+      <li><a href="#" data-section="login" class="nav-link">Iniciar sesión</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="inicio" class="section">
+      <div class="hero">
+        <div class="hero-text">
+          <h1>Bienvenida a Glamour Beauty</h1>
+          <p>Tu destino para maquillaje profesional, productos exclusivos y los mejores tips de belleza.</p>
+          <button class="cta-btn" id="explora-productos">Explora Productos</button>
+        </div>
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Maquillaje Glamour" class="hero-img">
+      </div>
+    </section>
+
+    <section id="productos" class="section" style="display:none;">
+      <h1>Nuestros Productos</h1>
+      <div class="productos-grid" id="productos-grid"></div>
+      <div id="admin-productos" style="display:none;">
+        <h2>Agregar producto</h2>
+        <form id="form-agregar-producto">
+          <input type="text" id="nuevo-nombre" placeholder="Nombre" required>
+          <input type="text" id="nuevo-descripcion" placeholder="Descripción" required>
+          <input type="url" id="nuevo-imagen" placeholder="URL de imagen" required>
+          <button type="submit">Agregar</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="tips" class="section" style="display:none;">
+      <h1>Tips de Maquillaje</h1>
+      <div class="tips-list" id="tips-list"></div>
+    </section>
+
+    <section id="login" class="section" style="display:none;">
+      <h1>Iniciar sesión</h1>
+      <form id="login-form" autocomplete="off">
+        <label for="login-usuario">Usuario:</label>
+        <input type="text" id="login-usuario" required>
+        <label for="login-password">Contraseña:</label>
+        <div style="position:relative;">
+          <input type="password" id="login-password" required>
+          <button type="button" id="toggle-login-password" style="position:absolute; right:5px; top:5px;">👁️</button>
+        </div>
+        <button type="submit">Entrar</button>
+        <div style="margin-top: 12px; text-align: center;">
+          <a href="#" id="registrate-link">Registrarte</a> |
+          <a href="#" id="olvide-link">¿Olvidaste tu contraseña?</a>
+        </div>
+      </form>
+      <div id="login-error" class="alert error" style="display:none;">
+        Usuario o contraseña incorrectos.
+      </div>
+    </section>
+
+    <section id="comentarios" class="section" style="display:none;">
+      <h1>Deja tu comentario</h1>
+      <form id="comentario-form" autocomplete="off">
+        <label for="comentario-nombre">Nombre:</label>
+        <input type="text" id="comentario-nombre" required>
+        <label for="comentario-texto">Comentario:</label>
+        <textarea id="comentario-texto" required></textarea>
+        <button type="submit">Publicar</button>
+      </form>
+    </section>
+
+    <section id="info-usuario" class="section" style="display:none;">
+      <h2>Mi perfil</h2>
+      <ul id="datos-usuario"></ul>
+      <button id="logout-btn">Cerrar sesión</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Glamour Beauty. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="app.js"></script>
+
+  <!-- Modal de registro -->
+  <div id="modal-registro" class="modal" style="display:none;">
+    <div class="modal-content registro-horizontal">
+      <span class="close" id="cerrar-modal">&times;</span>
+      <form id="registro-form" class="registro-form-horizontal">
+        <div class="registro-col">
+          <h2><span style="color:#c2185b;">Registro</span> de usuario</h2>
+          <div class="input-group">
+            <label for="reg-nombre"><span class="icon">👤</span> Nombre completo</label>
+            <input type="text" id="reg-nombre" required>
+          </div>
+          <div class="input-group">
+            <label for="reg-fecha"><span class="icon">📅</span> Fecha de nacimiento</label>
+            <input type="date" id="reg-fecha" required>
+          </div>
+          <div class="input-group">
+            <label for="reg-edad"><span class="icon">🎂</span> Edad</label>
+            <input type="number" id="reg-edad" min="1" required>
+          </div>
+          <div class="input-group">
+            <label for="reg-usuario"><span class="icon">🆔</span> Usuario</label>
+            <input type="text" id="reg-usuario" required>
+          </div>
+        </div>
+        <div class="registro-col">
+          <div class="input-group">
+            <label for="reg-password"><span class="icon">🔒</span> Contraseña</label>
+            <div class="input-password">
+              <input type="password" id="reg-password" required>
+              <button type="button" id="toggle-reg-password" class="toggle-eye">👁️</button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="reg-password2"><span class="icon">🔒</span> Confirmar contraseña</label>
+            <div class="input-password">
+              <input type="password" id="reg-password2" required>
+              <button type="button" id="toggle-reg-password2" class="toggle-eye">👁️</button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="pregunta1"><span class="icon">❓</span> Pregunta de seguridad 1</label>
+            <select id="pregunta1" required>
+              <option value="">Selecciona una pregunta</option>
+              <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
+              <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
+              <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
+              <option value="¿Cómo se llama tu mejor amigo de la infancia?">¿Cómo se llama tu mejor amigo de la infancia?</option>
+            </select>
+            <input type="text" id="respuesta1" placeholder="Respuesta" required>
+          </div>
+          <div class="input-group">
+            <label for="pregunta2"><span class="icon">❓</span> Pregunta de seguridad 2</label>
+            <select id="pregunta2" required>
+              <option value="">Selecciona una pregunta</option>
+              <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
+              <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
+              <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
+              <option value="¿Cómo se llama tu mejor amigo de la infancia?">¿Cómo se llama tu mejor amigo de la infancia?</option>
+            </select>
+            <input type="text" id="respuesta2" placeholder="Respuesta" required>
+          </div>
+          <button type="submit" class="btn-registro">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de recuperación de contraseña -->
+  <div id="modal-recuperar" class="modal" style="display:none;">
+    <div class="modal-content registro-horizontal">
+      <span class="close" id="cerrar-modal-recuperar">&times;</span>
+      <form id="recuperar-form" class="registro-form-horizontal">
+        <div class="registro-col">
+          <h2><span style="color:#c2185b;">Recuperar</span> contraseña</h2>
+          <div class="input-group">
+            <label for="rec-usuario"><span class="icon">🆔</span> Usuario</label>
+            <input type="text" id="rec-usuario" required>
+          </div>
+          <button type="button" id="ver-preguntas" class="btn-registro" style="margin-top:12px;">Ver preguntas</button>
+        </div>
+        <div class="registro-col" id="preguntas-seguridad" style="display:none;">
+          <div class="input-group">
+            <label id="label-pregunta1"></label>
+            <input type="text" id="respuesta1-recuperar" placeholder="Respuesta 1" required>
+          </div>
+          <div class="input-group">
+            <label id="label-pregunta2"></label>
+            <input type="text" id="respuesta2-recuperar" placeholder="Respuesta 2" required>
+          </div>
+          <div class="input-group">
+            <label for="nueva-password"><span class="icon">🔒</span> Nueva contraseña</label>
+            <div class="input-password">
+              <input type="password" id="nueva-password" required>
+              <button type="button" id="toggle-nueva-password" class="toggle-eye">👁️</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-registro">Cambiar contraseña</button>
+        </div>
+      </form>
+      <div id="recuperar-error" class="alert error" style="display:none;">Datos incorrectos.</div>
+      <div id="recuperar-exito" class="alert success" style="display:none;">¡Contraseña cambiada!</div>
+    </div>
+  </div>
+</body>
+</html>
