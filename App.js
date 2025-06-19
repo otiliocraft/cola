@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function() {
 // --- NAVEGACIÓN ENTRE SECCIONES ---
 document.querySelectorAll('nav ul li a[data-section]').forEach(link => {
   link.addEventListener('click', function(e) {
@@ -9,20 +10,19 @@ document.querySelectorAll('nav ul li a[data-section]').forEach(link => {
       if (section) section.style.display = 'block';
       document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
       this.classList.add('active');
-      history.pushState({section: sectionId}, '', '#' + sectionId);
+      history.pushState({section: sectionId}, '', '#' + encodeURIComponent(sectionId));
     }
   });
 });
 
 window.addEventListener('popstate', function(e) {
-  const sectionId = (e.state && e.state.section) || location.hash.replace('#', '') || 'inicio';
+  const sectionId = (e.state && e.state.section) || decodeURIComponent(location.hash.replace('#', '')) || 'inicio';
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
   const section = document.getElementById(sectionId);
   if (section) section.style.display = 'block';
 });
 
 // --- MODALES REGISTRO Y RECUPERAR ---
-document.addEventListener('DOMContentLoaded', function() {
   // Mostrar modal de registro
   const registrateLink = document.getElementById('registrate-link');
   const modalRegistro = document.getElementById('modal-registro');
@@ -117,7 +117,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  const initialSection = location.hash.replace('#', '') || 'inicio';
+  // Validación en tiempo real de la contraseña
+  const regPasswordInput = document.getElementById('reg-password');
+  if (regPasswordInput) {
+    regPasswordInput.addEventListener('input', function() {
+      const val = regPasswordInput.value;
+      document.getElementById('cond-length').classList.toggle('ok', val.length >= 8);
+      document.getElementById('cond-mayus').classList.toggle('ok', /[A-Z]/.test(val));
+      document.getElementById('cond-minus').classList.toggle('ok', /[a-z]/.test(val));
+      document.getElementById('cond-num').classList.toggle('ok', /[0-9]/.test(val));
+      document.getElementById('cond-symbol').classList.toggle('ok', /[^A-Za-z0-9]/.test(val));
+    });
+  }
+
+  // Mostrar sección inicial
+  const initialSection = decodeURIComponent(location.hash.replace('#', '')) || 'inicio';
   document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
   const section = document.getElementById(initialSection);
   if (section) section.style.display = 'block';
@@ -125,7 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // --- REGISTRO ---
 function obtenerUsuarios() {
-  return JSON.parse(localStorage.getItem('usuariosGlamour')) || [];
+  try {
+    return JSON.parse(localStorage.getItem('usuariosGlamour')) || [];
+  } catch {
+    return [];
+  }
 }
 function guardarUsuarios(usuarios) {
   localStorage.setItem('usuariosGlamour', JSON.stringify(usuarios));
@@ -134,54 +152,111 @@ const registroForm = document.getElementById('registro-form');
 if (registroForm) {
   registroForm.addEventListener('submit', function(e) {
     e.preventDefault();
+
+    // Limpiar errores anteriores
+    document.querySelectorAll('.input-error').forEach(div => div.textContent = '');
+
+    let valido = true;
+
+    // Validar nombre
     const nombre = document.getElementById('reg-nombre').value.trim();
-    const fecha = document.getElementById('reg-fecha').value;
-    const edad = document.getElementById('reg-edad').value.trim();
+    if (nombre.length < 3) {
+      document.getElementById('error-nombre').textContent = 'El nombre es muy corto.';
+      valido = false;
+    }
+
+    // Validar usuario
     const usuario = document.getElementById('reg-usuario').value.trim();
+    if (usuario.length < 4) {
+      document.getElementById('error-usuario').textContent = 'El usuario debe tener al menos 4 caracteres.';
+      valido = false;
+    }
+
+    // Validar contraseña
     const password = document.getElementById('reg-password').value;
     const password2 = document.getElementById('reg-password2').value;
+    let passError = '';
+    if (password.length < 8) passError += 'Debe tener al menos 8 caracteres. ';
+    if (!/[A-Z]/.test(password)) passError += 'Debe tener una mayúscula. ';
+    if (!/[a-z]/.test(password)) passError += 'Debe tener una minúscula. ';
+    if (!/[0-9]/.test(password)) passError += 'Debe tener un número. ';
+    if (!/[^A-Za-z0-9]/.test(password)) passError += 'Debe tener un símbolo. ';
+    if (passError) {
+      document.getElementById('password-condiciones').nextElementSibling.textContent = passError;
+      valido = false;
+    } else {
+      document.getElementById('password-condiciones').nextElementSibling.textContent = '';
+    }
+
+    // Validar confirmación de contraseña
+    if (password !== password2) {
+      document.getElementById('reg-password2').parentElement.nextElementSibling.textContent = 'Las contraseñas no coinciden.';
+      valido = false;
+    } else {
+      document.getElementById('reg-password2').parentElement.nextElementSibling.textContent = ' ';
+    }
+
+    // Validar preguntas y respuestas
     const pregunta1 = document.getElementById('pregunta1').value.trim();
     const respuesta1 = document.getElementById('respuesta1').value.trim();
     const pregunta2 = document.getElementById('pregunta2').value.trim();
     const respuesta2 = document.getElementById('respuesta2').value.trim();
+    if (!pregunta1 || !respuesta1 || !pregunta2 || !respuesta2) {
+      valido = false;
+    }
 
+    // Validar edad y fecha
+    const fecha = document.getElementById('reg-fecha').value;
+    const edad = document.getElementById('reg-edad').value.trim();
+    if (!fecha || !edad) {
+      valido = false;
+    }
+
+    // Validar usuario único
     let usuarios = obtenerUsuarios();
     if (usuarios.find(u => u.usuario === usuario)) {
-      alert('El usuario ya está registrado. Elige otro nombre de usuario.');
-      return;
+      document.getElementById('error-usuario').textContent = 'El usuario ya está registrado. Elige otro nombre de usuario.';
+      valido = false;
     }
 
-    // Protocolo de seguridad para la contraseña
-    const errores = [];
-    if (password.length < 8) errores.push('• Al menos 8 caracteres');
-    if (!/[A-Z]/.test(password)) errores.push('• Al menos una mayúscula');
-    if (!/[a-z]/.test(password)) errores.push('• Al menos una minúscula');
-    if (!/[0-9]/.test(password)) errores.push('• Al menos un número');
-    if (!/[^A-Za-z0-9]/.test(password)) errores.push('• Al menos un símbolo');
-
-    if (errores.length > 0) {
-      alert('La contraseña debe cumplir con:\n' + errores.join('\n'));
-      return;
-    }
-
-    if (password !== password2) {
-      alert('Las contraseñas no coinciden.');
-      return;
-    }
+    if (!valido) return;
 
     usuarios.push({
-      nombre,
+      nombre: nombre.replace(/[<>]/g, ''),
       fecha,
-      edad,
-      usuario,
+      edad: edad.replace(/[<>]/g, ''),
+      usuario: usuario.replace(/[<>]/g, ''),
       password,
-      pregunta1,
-      respuesta1,
-      pregunta2,
-      respuesta2
+      pregunta1: pregunta1.replace(/[<>]/g, ''),
+      respuesta1: respuesta1.replace(/[<>]/g, ''),
+      pregunta2: pregunta2.replace(/[<>]/g, ''),
+      respuesta2: respuesta2.replace(/[<>]/g, '')
     });
     guardarUsuarios(usuarios);
-    alert('¡Usuario registrado con éxito!');
+    // Ocultar modal de registro
+document.getElementById('modal-registro').style.display = 'none';
+
+// Mostrar mensaje de éxito
+const exitoDiv = document.getElementById('registro-exito');
+if (exitoDiv) {
+  exitoDiv.style.display = 'block';
+}
+
+// Cerrar mensaje al hacer clic fuera del contenido o en la X
+document.addEventListener('click', function cerrarMensaje(e) {
+  const mensaje = document.getElementById('registro-exito');
+  if (!mensaje) return;
+
+  // Si se hace clic en la "X" o fuera del contenido
+  if (
+    e.target === mensaje ||
+    e.target.classList.contains('cerrar-mensaje')
+  ) {
+    mensaje.style.display = 'none';
+    // Quitar evento para evitar múltiples listeners
+    document.removeEventListener('click', cerrarMensaje);
+  }
+});
     document.getElementById('modal-registro').style.display = 'none';
     registroForm.reset();
     // Mostrar login y rellenar usuario
@@ -208,6 +283,8 @@ if (loginForm) {
       mostrarInfoUsuario(usuarioInput);
       document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
       document.getElementById('info-usuario').style.display = 'block';
+    } else {
+      loginError.style.display = 'block';
     }
   });
 }
@@ -225,7 +302,7 @@ function mostrarInfoUsuario(usuario) {
   ];
   const lista = document.getElementById('datos-usuario');
   if (lista) {
-    lista.innerHTML = datos.map(d => `<li><strong>${d.label}:</strong> ${d.value}</li>`).join('');
+    lista.innerHTML = datos.map(d => `<li><strong>${d.label}:</strong> ${d.value.replace(/[<>]/g, '')}</li>`).join('');
   }
   const infoSection = document.getElementById('info-usuario');
   if (infoSection) infoSection.style.display = 'block';
@@ -252,8 +329,8 @@ if (verPreguntasBtn) {
     const user = usuarios.find(u => u.usuario === usuario);
     if (user) {
       usuarioRecuperar = user;
-      document.getElementById('label-pregunta1').textContent = user.pregunta1;
-      document.getElementById('label-pregunta2').textContent = user.pregunta2;
+      document.getElementById('label-pregunta1').textContent = user.pregunta1.replace(/[<>]/g, '');
+      document.getElementById('label-pregunta2').textContent = user.pregunta2.replace(/[<>]/g, '');
       document.getElementById('preguntas-seguridad').style.display = '';
       document.getElementById('recuperar-error').style.display = 'none';
     } else {
