@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Importar Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Agrega esta línea -->
   <title>Glamour Beauty - Maquillaje Profesional</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -90,6 +93,7 @@
   <footer>
     <p>&copy; 2025 Glamour Beauty. Todos los derechos reservados.</p>
   </footer>
+
   <!-- Modal de registro -->
   <div id="modal-registro" class="modal" style="display:none;">
     <div class="modal-content registro-horizontal">
@@ -98,8 +102,9 @@
         <div class="registro-col">
           <h2><span style="color:#c2185b;">Registro</span> de usuario</h2>
           <div class="input-group">
-            <label for="reg-nombre"><span class="icon">👤</span> Nombre completo</label>
+            <label for="reg-nombre">Nombre completo</label>
             <input type="text" id="reg-nombre" required>
+            <div id="error-nombre" class="input-error"></div>
           </div>
           <div class="input-group">
             <label for="reg-fecha"><span class="icon">📅</span> Fecha de nacimiento</label>
@@ -110,8 +115,9 @@
             <input type="number" id="reg-edad" min="1" required>
           </div>
           <div class="input-group">
-            <label for="reg-usuario"><span class="icon">🆔</span> Usuario</label>
+            <label for="reg-usuario">Usuario</label>
             <input type="text" id="reg-usuario" required>
+            <div id="error-usuario" class="input-error"></div>
           </div>
         </div>
         <div class="registro-col">
@@ -121,6 +127,14 @@
               <input type="password" id="reg-password" required>
               <button type="button" id="toggle-reg-password" class="toggle-eye">👁️</button>
             </div>
+            <ul class="password-condiciones" id="password-condiciones">
+              <li id="cond-length">Al menos 8 caracteres</li>
+              <li id="cond-mayus">Una letra mayúscula</li>
+              <li id="cond-minus">Una letra minúscula</li>
+              <li id="cond-num">Un número</li>
+              <li id="cond-symbol">Un símbolo</li>
+            </ul>
+            <div id="password-error-message" class="input-error"></div>
           </div>
           <div class="input-group">
             <label for="reg-password2"><span class="icon">🔒</span> Confirmar contraseña</label>
@@ -128,6 +142,7 @@
               <input type="password" id="reg-password2" required>
               <button type="button" id="toggle-reg-password2" class="toggle-eye">👁️</button>
             </div>
+            <div id="error-confirmacion" class="input-error"></div>
           </div>
           <div class="input-group">
             <label for="pregunta1"><span class="icon">❓</span> Pregunta de seguridad 1</label>
@@ -189,11 +204,20 @@
           <button type="submit" class="btn-registro">Cambiar contraseña</button>
         </div>
       </form>
+      
       <div id="recuperar-error" class="alert error" style="display:none;">Datos incorrectos.</div>
-      <div id="recuperar-exito" class="alert success" style="display:none;">¡Contraseña cambiada!</div>
+      
     </div>
   </div>
+<!-- Mensaje de éxito después del registro -->
+<div id="registro-exito" class="mensaje-exito" style="display: none;">
+  <div class="mensaje-contenido">
+    <p>✅ ¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.</p>
+    <span class="cerrar-mensaje">&times;</span>
+  </div>
+</div>
+
   <script src="app.js"></script>
+
 </body>
 </html>
-
