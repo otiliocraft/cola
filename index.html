@@ -1,223 +1,235 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Importar Inter -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Agrega esta línea -->
-  <title>Glamour Beauty - Maquillaje Profesional</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎲 Ruleta de Inteligencia Emocional</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    max-width:850px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:scale(.95)}
+    to{opacity:1; transform:scale(1)}
+}
+
+h1{
+    color:#2c3e50;
+}
+
+.subtitle{
+    margin:10px 0 60px; /* 🔥 separación REAL */
+    color:#7f8c8d;
+    font-size:1.05em;
+}
+
+.wheel-container{
+    position:relative;
+    width:420px;
+    height:420px;
+    margin:0 auto 35px;
+    padding-top:50px; /* 🔥 espacio interno para la flecha */
+}
+
+.wheel{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    background:conic-gradient(
+        #FF6B6B 0deg 51.43deg,
+        #4ECDC4 51.43deg 102.86deg,
+        #45B7D1 102.86deg 154.29deg,
+        #96CEB4 154.29deg 205.72deg,
+        #FECA57 205.72deg 257.15deg,
+        #FF9FF3 257.15deg 308.58deg,
+        #FF6B9D 308.58deg 360deg
+    );
+    border:8px solid #f1f1f1;
+    transition:transform 8s cubic-bezier(.15,.7,.1,1);
+}
+
+.number{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform-origin:0 0;
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+    text-shadow:2px 2px 4px rgba(0,0,0,.4);
+}
+
+.pointer{
+    position:absolute;
+    top:15px; /* ✅ YA NO SUBE */
+    left:50%;
+    transform:translateX(-50%);
+    width:0;
+    height:0;
+    border-left:28px solid transparent;
+    border-right:28px solid transparent;
+    border-top:55px solid #e74c3c;
+    z-index:10;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));
+    animation:idleBounce 1s infinite;
+}
+
+@keyframes idleBounce{
+    0%,100%{transform:translateX(-50%) translateY(0)}
+    50%{transform:translateX(-50%) translateY(-6px)}
+}
+
+.pointer.spin{
+    animation:tick .15s infinite;
+}
+
+@keyframes tick{
+    0%{transform:translateX(-50%) rotate(-6deg)}
+    50%{transform:translateX(-50%) rotate(6deg)}
+    100%{transform:translateX(-50%) rotate(-6deg)}
+}
+
+.spin-button{
+    padding:15px 50px;
+    font-size:1.3em;
+    border-radius:50px;
+    border:none;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    box-shadow:0 5px 15px rgba(0,0,0,.3);
+    transition:transform .2s;
+}
+
+.spin-button:hover{
+    transform:scale(1.05);
+}
+
+.spin-button:disabled{
+    background:#aaa;
+    cursor:not-allowed;
+}
+
+.result{
+    display:none;
+    margin-top:25px;
+    background:#f1f3f5;
+    padding:20px;
+    border-radius:15px;
+    font-size:1.3em;
+    color:#2c3e50;
+    animation:pop .5s ease;
+}
+
+@keyframes pop{
+    from{opacity:0; transform:scale(.9)}
+    to{opacity:1; transform:scale(1)}
+}
+
+@media(max-width:600px){
+    .wheel-container{
+        width:300px;
+        height:300px;
+    }
+}
+</style>
 </head>
+
 <body>
-  <nav>
-    <div class="logo">Glamour Beauty</div>
-    <ul>
-      <li><a href="#" data-section="inicio" class="nav-link">Inicio</a></li>
-      <li><a href="#" data-section="productos" class="nav-link">Productos</a></li>
-      <li><a href="#" data-section="tips" class="nav-link">Tips</a></li>
-      <li><a href="#" data-section="comentarios" class="nav-link">Comentarios</a></li>
-      <li><a href="#" data-section="login" class="nav-link">Iniciar sesión</a></li>
-    </ul>
-  </nav>
+<div class="container">
+    <h1>🎲 Ruleta de Inteligencia Emocional</h1>
+    <p class="subtitle">Gira la ruleta y reflexiona</p>
 
-  <main>
-    <section id="inicio" class="section">
-      <div class="hero">
-        <div class="hero-text">
-          <h1>Bienvenida a Glamour Beauty</h1>
-          <p>Tu destino para maquillaje profesional, productos exclusivos y los mejores tips de belleza.</p>
-          <button class="cta-btn" id="explora-productos">Explora Productos</button>
-        </div>
-        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="Maquillaje Glamour" class="hero-img">
-      </div>
-    </section>
-
-    <section id="productos" class="section" style="display:none;">
-      <h1>Nuestros Productos</h1>
-      <div class="productos-grid" id="productos-grid"></div>
-      <div id="admin-productos" style="display:none;">
-        <h2>Agregar producto</h2>
-        <form id="form-agregar-producto">
-          <input type="text" id="nuevo-nombre" placeholder="Nombre" required>
-          <input type="text" id="nuevo-descripcion" placeholder="Descripción" required>
-          <input type="url" id="nuevo-imagen" placeholder="URL de imagen" required>
-          <button type="submit">Agregar</button>
-        </form>
-      </div>
-    </section>
-
-    <section id="tips" class="section" style="display:none;">
-      <h1>Tips de Maquillaje</h1>
-      <div class="tips-list" id="tips-list"></div>
-    </section>
-
-    <section id="login" class="section" style="display:none;">
-      <h1>Iniciar sesión</h1>
-      <form id="login-form" autocomplete="off">
-        <label for="login-usuario">Usuario:</label>
-        <input type="text" id="login-usuario" required>
-        <label for="login-password">Contraseña:</label>
-        <div style="position:relative;">
-          <input type="password" id="login-password" required>
-          <button type="button" id="toggle-login-password" style="position:absolute; right:5px; top:5px;">👁️</button>
-        </div>
-        <button type="submit">Entrar</button>
-        <div style="margin-top: 12px; text-align: center;">
-          <a href="#" id="registrate-link">Registrarte</a> |
-          <a href="#" id="olvide-link">¿Olvidaste tu contraseña?</a>
-        </div>
-      </form>
-      <div id="login-error" class="alert error" style="display:none;">
-        Usuario o contraseña incorrectos.
-      </div>
-    </section>
-
-    <section id="comentarios" class="section" style="display:none;">
-      <h1>Deja tu comentario</h1>
-      <form id="comentario-form" autocomplete="off">
-        <label for="comentario-nombre">Nombre:</label>
-        <input type="text" id="comentario-nombre" required>
-        <label for="comentario-texto">Comentario:</label>
-        <textarea id="comentario-texto" required></textarea>
-        <button type="submit">Publicar</button>
-      </form>
-    </section>
-
-    <section id="info-usuario" class="section" style="display:none;">
-      <h2>Mi perfil</h2>
-      <ul id="datos-usuario"></ul>
-      <button id="logout-btn">Cerrar sesión</button>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Glamour Beauty. Todos los derechos reservados.</p>
-  </footer>
-
-  <!-- Modal de registro -->
-  <div id="modal-registro" class="modal" style="display:none;">
-    <div class="modal-content registro-horizontal">
-      <span class="close" id="cerrar-modal">&times;</span>
-      <form id="registro-form" class="registro-form-horizontal">
-        <div class="registro-col">
-          <h2><span style="color:#c2185b;">Registro</span> de usuario</h2>
-          <div class="input-group">
-            <label for="reg-nombre">Nombre completo</label>
-            <input type="text" id="reg-nombre" required>
-            <div id="error-nombre" class="input-error"></div>
-          </div>
-          <div class="input-group">
-            <label for="reg-fecha"><span class="icon">📅</span> Fecha de nacimiento</label>
-            <input type="date" id="reg-fecha" required>
-          </div>
-          <div class="input-group">
-            <label for="reg-edad"><span class="icon">🎂</span> Edad</label>
-            <input type="number" id="reg-edad" min="1" required>
-          </div>
-          <div class="input-group">
-            <label for="reg-usuario">Usuario</label>
-            <input type="text" id="reg-usuario" required>
-            <div id="error-usuario" class="input-error"></div>
-          </div>
-        </div>
-        <div class="registro-col">
-          <div class="input-group">
-            <label for="reg-password"><span class="icon">🔒</span> Contraseña</label>
-            <div class="input-password">
-              <input type="password" id="reg-password" required>
-              <button type="button" id="toggle-reg-password" class="toggle-eye">👁️</button>
-            </div>
-            <ul class="password-condiciones" id="password-condiciones">
-              <li id="cond-length">Al menos 8 caracteres</li>
-              <li id="cond-mayus">Una letra mayúscula</li>
-              <li id="cond-minus">Una letra minúscula</li>
-              <li id="cond-num">Un número</li>
-              <li id="cond-symbol">Un símbolo</li>
-            </ul>
-            <div id="password-error-message" class="input-error"></div>
-          </div>
-          <div class="input-group">
-            <label for="reg-password2"><span class="icon">🔒</span> Confirmar contraseña</label>
-            <div class="input-password">
-              <input type="password" id="reg-password2" required>
-              <button type="button" id="toggle-reg-password2" class="toggle-eye">👁️</button>
-            </div>
-            <div id="error-confirmacion" class="input-error"></div>
-          </div>
-          <div class="input-group">
-            <label for="pregunta1"><span class="icon">❓</span> Pregunta de seguridad 1</label>
-            <select id="pregunta1" required>
-              <option value="">Selecciona una pregunta</option>
-              <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
-              <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
-              <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
-              <option value="¿Cómo se llama tu mejor amigo de la infancia?">¿Cómo se llama tu mejor amigo de la infancia?</option>
-            </select>
-            <input type="text" id="respuesta1" placeholder="Respuesta" required>
-          </div>
-          <div class="input-group">
-            <label for="pregunta2"><span class="icon">❓</span> Pregunta de seguridad 2</label>
-            <select id="pregunta2" required>
-              <option value="">Selecciona una pregunta</option>
-              <option value="¿Cuál es el nombre de tu primera mascota?">¿Cuál es el nombre de tu primera mascota?</option>
-              <option value="¿En qué ciudad naciste?">¿En qué ciudad naciste?</option>
-              <option value="¿Cuál es tu comida favorita?">¿Cuál es tu comida favorita?</option>
-              <option value="¿Cómo se llama tu mejor amigo de la infancia?">¿Cómo se llama tu mejor amigo de la infancia?</option>
-            </select>
-            <input type="text" id="respuesta2" placeholder="Respuesta" required>
-          </div>
-          <button type="submit" class="btn-registro">Registrar</button>
-        </div>
-      </form>
+    <div class="wheel-container">
+        <div class="pointer" id="pointer"></div>
+        <div class="wheel" id="wheel"></div>
     </div>
-  </div>
 
-  <!-- Modal de recuperación de contraseña -->
-  <div id="modal-recuperar" class="modal" style="display:none;">
-    <div class="modal-content registro-horizontal">
-      <span class="close" id="cerrar-modal-recuperar">&times;</span>
-      <form id="recuperar-form" class="registro-form-horizontal">
-        <div class="registro-col">
-          <h2><span style="color:#c2185b;">Recuperar</span> contraseña</h2>
-          <div class="input-group">
-            <label for="rec-usuario"><span class="icon">🆔</span> Usuario</label>
-            <input type="text" id="rec-usuario" required>
-          </div>
-          <button type="button" id="ver-preguntas" class="btn-registro" style="margin-top:12px;">Ver preguntas</button>
-        </div>
-        <div class="registro-col" id="preguntas-seguridad" style="display:none;">
-          <div class="input-group">
-            <label id="label-pregunta1"></label>
-            <input type="text" id="respuesta1-recuperar" placeholder="Respuesta 1" required>
-          </div>
-          <div class="input-group">
-            <label id="label-pregunta2"></label>
-            <input type="text" id="respuesta2-recuperar" placeholder="Respuesta 2" required>
-          </div>
-          <div class="input-group">
-            <label for="nueva-password"><span class="icon">🔒</span> Nueva contraseña</label>
-            <div class="input-password">
-              <input type="password" id="nueva-password" required>
-              <button type="button" id="toggle-nueva-password" class="toggle-eye">👁️</button>
-            </div>
-          </div>
-          <button type="submit" class="btn-registro">Cambiar contraseña</button>
-        </div>
-      </form>
-      
-      <div id="recuperar-error" class="alert error" style="display:none;">Datos incorrectos.</div>
-      
-    </div>
-  </div>
-<!-- Mensaje de éxito después del registro -->
-<div id="registro-exito" class="mensaje-exito" style="display: none;">
-  <div class="mensaje-contenido">
-    <p>✅ ¡Tu cuenta ha sido creada con éxito! Ahora puedes iniciar sesión.</p>
-    <span class="cerrar-mensaje">&times;</span>
-  </div>
+    <button class="spin-button" id="spin">¡GIRAR!</button>
+
+    <div class="result" id="result"></div>
 </div>
 
-  <script src="app.js"></script>
+<script>
+const questions=[
+ "¿Cómo identificas y nombras tus emociones cuando estás estresado?",
+ "¿Qué estrategias usas para calmarte cuando sientes ira o frustración?",
+ "¿Cómo demuestras empatía hacia las personas que te rodean?",
+ "¿Qué haces para mantener relaciones saludables con los demás?",
+ "¿Cómo manejas el feedback crítico sin tomarlo personalmente?",
+ "¿Qué te motiva a seguir adelante cuando enfrentas obstáculos?",
+ "¿Cómo practicas el autocuidado para mantener tu bienestar emocional?"
+];
 
+const wheel=document.getElementById("wheel");
+const pointer=document.getElementById("pointer");
+const btn=document.getElementById("spin");
+const result=document.getElementById("result");
+
+let angle=360/questions.length;
+let rotation=0;
+let spinning=false;
+let last=-1;
+
+// Números
+questions.forEach((_,i)=>{
+    const n=document.createElement("div");
+    n.className="number";
+    const a=angle*i+angle/2;
+    n.style.transform=`rotate(${a}deg) translate(170px) rotate(-${a}deg)`;
+    n.textContent=i+1;
+    wheel.appendChild(n);
+});
+
+btn.onclick=()=>{
+    if(spinning) return;
+    spinning=true;
+    btn.disabled=true;
+    result.style.display="none";
+    pointer.classList.add("spin");
+
+    let index;
+    do{
+        index=Math.floor(Math.random()*questions.length);
+    }while(index===last);
+    last=index;
+
+    rotation+=360*10+index*angle+angle/2;
+    wheel.style.transform=`rotate(-${rotation}deg)`;
+
+    setTimeout(()=>{
+        pointer.classList.remove("spin");
+        result.textContent=questions[index];
+        result.style.display="block";
+        spinning=false;
+        btn.disabled=false;
+    },8000);
+};
+</script>
 </body>
 </html>
